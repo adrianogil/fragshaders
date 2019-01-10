@@ -14,8 +14,6 @@ void main(void) {
 	vec2 st = cameraAddent + uv * cameraOrientation;
 
 	vec3 color = texture2D(cameraBack, st).rgb;
-	
-	float meancolor = 0.5*(color.x + color.y);
 
 	gl_FragColor = vec4(color, 1.0);
 }
