@@ -40,16 +40,17 @@ void main(void) {
                      length(color8 - color0);
 
     float max_distance = 0.1;
-    float max_magnification = 0.05;
+    float max_magnification = 0.65;
 
-    vec3 magnification_factor = vec4(0.0, 0.0, 0.0);
+    vec3 magnification_factor = vec3(0.0, 0.0, 0.0);
+    vec3 target_color = vec3(1.0, 1.0, 1.0);
 
     if (distance > max_distance)
     {
-        magnification_factor = normalize(color0) * max_magnification;
+        magnification_factor = normalize(target_color - color0) * max_magnification;
     } else {
-        magnification_factor = normalize(color0) * max_magnification * distance / max_distance;
+        magnification_factor = normalize(target_color - color0) * max_magnification * distance / max_distance;
     }
 
-    gl_FragColor = color0 + magnification_factor;
+    gl_FragColor = vec4(color0 + magnification_factor, 0.0);
 }
