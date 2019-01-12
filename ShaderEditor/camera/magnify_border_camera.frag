@@ -14,7 +14,7 @@ vec3 getcamerapixel(float i, float y)
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 st = cameraAddent + uv * cameraOrientation;
 
-    return texture2D(cameraBack, uv + vec2(i,y)/resolution.xy).rgb;
+    return texture2D(cameraBack, st + vec2(i,y)/resolution.xy).rgb;
 }
 
 void main(void) {
@@ -28,6 +28,16 @@ void main(void) {
     vec3 color6 = getcamerapixel( 1.0, -1.0);
     vec3 color7 = getcamerapixel( 1.0,  0.0);
     vec3 color8 = getcamerapixel( 1.0,  1.0);
+
+    // Filter using mean kernel
+    color0 = (1.0/9.0) * (color1 + 
+                          color2 + 
+                          color3 + 
+                          color4 + 
+                          color5 + 
+                          color6 + 
+                          color7 + 
+                          color8);
 
 
     float distance = length(color1 - color0) + 
