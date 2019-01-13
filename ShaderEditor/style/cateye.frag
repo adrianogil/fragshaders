@@ -30,9 +30,6 @@ void main(void) {
               0.534 * originalColor.y +
               0.131 * originalColor.z;
 
-    float darkFactor = 0.1;
-    vec3 darkerColor = originalColor - 0.1*normalize(originalColor);
-
     vec2 cateye_center = vec2(0.5, 0.5);
     float cateye_ellipse_a = 0.02;
     float cateye_ellipse_b = 0.2;
@@ -40,11 +37,18 @@ void main(void) {
     float ellipse_value = (uv.x - cateye_center.x) * (uv.x - cateye_center.x) / cateye_ellipse_a + 
       (uv.y - cateye_center.y) * (uv.y - cateye_center.y) / cateye_ellipse_b;
 
-    if (ellipse_value <= 1)
+    if (ellipse_value <= 1.0)
     {
       // Inside ellipse
+      float darkFactor = (1.0 - ellipse_value);
+      vec3 darkerColor = originalColor - 0.1*normalize(originalColor);
       gl_FragColor = vec4(darkerColor, 1.0);
-    } else{
+    } else if (ellipse_value <= 2.0)
+    {
+      float f = ellipse_value - 1.0;
+      gl_FragColor = vec4(f * originalColor + (1 - f) * sepiaColor, 1.0);
+    }
+    else{
       // Outside ellipse
       gl_FragColor = vec4(sepiaColor, 1.0);
     }
