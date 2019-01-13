@@ -5,6 +5,7 @@ precision highp float;
 precision mediump float;
 #endif
 
+uniform float time;
 uniform vec2 resolution;
 uniform vec2 cameraAddent;
 uniform mat2 cameraOrientation;
@@ -13,6 +14,8 @@ uniform samplerExternalOES cameraBack;
 void main(void) {
     vec2 uv = gl_FragCoord.xy / resolution.xy;
     vec2 st = cameraAddent + uv * cameraOrientation;
+
+    float animatedTime = 0.5 * (1 + sin(time));
 
     vec3 sepiaColor = texture2D(cameraBack, st).rgb;
     vec3 originalColor = sepiaColor;
@@ -31,7 +34,7 @@ void main(void) {
               0.131 * originalColor.z;
 
     vec2 cateye_center = vec2(0.5, 0.5);
-    float cateye_ellipse_a = 0.02;
+    float cateye_ellipse_a = mix(0.02, 0.014, animatedTime);
     float cateye_ellipse_b = 0.2;
 
     float ellipse_value = (uv.x - cateye_center.x) * (uv.x - cateye_center.x) / cateye_ellipse_a + 
