@@ -40,13 +40,13 @@ void main(void) {
     if (ellipse_value <= 1.0)
     {
       // Inside ellipse
-      float darkFactor = (1.0 - ellipse_value);
-      vec3 darkerColor = originalColor - 0.1*normalize(originalColor);
+      float darkFactor = 0.5*(1.0 - ellipse_value);
+      vec3 darkerColor = originalColor - darkFactor*normalize(originalColor);
       gl_FragColor = vec4(darkerColor, 1.0);
     } else if (ellipse_value <= 2.0)
     {
       float f = ellipse_value - 1.0;
-      gl_FragColor = vec4(f * originalColor + (1 - f) * sepiaColor, 1.0);
+      gl_FragColor = vec4(mix(originalColor, sepiaColor, f), 1.0);
     }
     else{
       // Outside ellipse
@@ -54,3 +54,6 @@ void main(void) {
     }
     
 }
+
+
+
